@@ -4,7 +4,7 @@ from flask_restful import Resource
 from webargs import fields
 from webargs.flaskparser import use_kwargs
 
-from epa import cas_to_epa
+from controllers.epa import cas_to_epa
 
 class epaController(Resource):
     args = {

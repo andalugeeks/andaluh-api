@@ -256,7 +256,7 @@ def word_ending_rules(text):
 # Main function
 def cas_to_epa(text):
     # text = unicode(text, 'utf-8')
-    # text = h_rules(text)
+    text = h_rules(text)
     text = x_rules(text)
     text = ch_rules(text)
     text = gj_rules(text)

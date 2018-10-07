@@ -16,19 +16,7 @@ class epaController(Resource):
 
     @use_kwargs(args)
     def get(self, texto):
-        return {
-            texto: cas_to_epa(texto),
-            "reglas_activas": [
-                'h',
-                'x',
-                'ch',
-                'gj',
-                'v',
-                'll',
-                'l',
-                'ç',
-                'digrafos'
-            ]}
+        return {texto: cas_to_epa(texto)}
     
     # def post(self):
     #     return {"response" : "hello post"}

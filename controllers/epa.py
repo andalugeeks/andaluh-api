@@ -25,6 +25,25 @@ VOWELS_ALL_TILDE = VOWELS_TILDE + VOWELS_CIRCUMFLEX + VOWELS_TILDE_UP + VOWELS_C
 VAF = u'ç'
 VAF_UP = u'Ç'
 
+# Digraphs producers. (vowel)(const)(const) that triggers the general digraph rule
+DIGRAPHS = [
+    u"bb", u"bc", u"bç", u"bÇ", u"bd", u"bf", u"bg", u"bh", u"bm", u"bn", u"bp", u"bq", u"bt", u"bx", u"by", u"cb", u"cc",
+    u"cç", u"cÇ", u"cd", u"cf", u"cg", u"ch", u"cm", u"cn", u"cp", u"cq", u"ct", u"cx", u"cy",
+    u"db", u"dc", u"dç", u"dÇ", u"dd", u"df", u"dg", u"dh", u"dl", u"dm", u"dn", u"dp", u"dq", u"dt", u"dx", u"dy",
+    u"fb", u"fc", u"fç", u"fÇ", u"fd", u"ff", u"fg", u"fh", u"fm", u"fn", u"fp", u"fq", u"ft", u"fx", u"fy",
+    u"gb", u"gc", u"gç", u"gÇ", u"gd", u"gf", u"gg", u"gh", u"gm", u"gn", u"gp", u"gq", u"gt", u"gx", u"gy",
+    u"jb", u"jc", u"jç", u"jÇ", u"jd", u"jf", u"jg", u"jh", u"jl", u"jm", u"jn", u"jp", u"jq", u"jr", u"jt", u"jx", u"jy",
+    u"lb", u"lc", u"lç", u"lÇ", u"ld", u"lf", u"lg", u"lh", u"ll", u"lm", u"ln", u"lp", u"lq", u"lr", u"lt", u"lx", u"ly",
+    u"mm", u'mn',
+    u'nm', u'nn',
+    u"pb", u"pc", u"pç", u"pÇ", u"pd", u"pf", u"pg", u"ph", u"pm", u"pn", u"pp", u"pq", u"pt", u"px", u"py",
+    u"rn",
+    u"sb", u"sc", u"sç", u"sÇ", u"sd", u"sf", u"sg", u"sh", u"sk", u"sl", u"sm", u"sn", u"sñ", u"sp", u"sq", u"sr", u"st", u"sx", u"sy",
+    u"tb", u"tc", u"tç", u"tÇ", u"td", u"tf", u"tg", u"th", u"tl", u"tm", u"tn", u"tp", u"tq", u"tt", u"tx", u"ty",
+    u"xb", u"xc", u"xç", u"xÇ", u"xd", u"xf", u"xg", u"xh", u"xl", u"xm", u"xn", u"xp", u"xq", u"xr", u"xt", u"xx", u"xy",
+    u"zb", u"zc", u"zç", u"zÇ", u"zd", u"zf", u"zg", u"zh", u"zl", u"zm", u"zn", u"zp", u"zq", u"zr", u"zt", u"zx", "zy"
+]
+
 # Auxiliary functions
 def get_vowel_circumflex(vowel):
 
@@ -52,13 +71,12 @@ def x_rules(text):
     """Replacement rules for /ks/ with EPA VAF"""
 
     def replace_with_case(match):
-        whitespaces = match.group(1)
-        x_char = match.group(2)
+        x_char = match.group(1)
 
         if x_char.islower():
-            return whitespaces + VAF
+            return VAF
         else:
-            return whitespaces + VAF_UP
+            return VAF_UP
 
     def replace_intervowel_with_case(match):
         prev_char = match.group(1)
@@ -73,14 +91,16 @@ def x_rules(text):
             return prev_char + VAF*2 + next_char
 
     # If the text begins with /ks/
+    # Xilófono roto => Çilófono roto
     if text[0] == "X": text = VAF_UP + text[1:]
     if text[0] == "x": text = VAF + text[1:]
 
     # If the /ks/ sound is between vowels
+    # Axila => Aççila | Éxito => Éççito
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(x)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)', replace_intervowel_with_case, text, flags=re.IGNORECASE)
 
     # Every word starting with /ks/
-    text = re.sub(ur'([\W]+)(x|X)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'\b(x)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
@@ -162,7 +182,7 @@ def l_rules(text):
         else: 
             return 'R' + next_char
 
-    text = re.sub(ur'(l)(b|c|g|s|d|f|g|h|m|n|p|q|r|t|x)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(l)(b|c|ç|Ç|g|s|d|f|g|h|k|m|p|q|r|t|x|z)', replace_with_case, text, flags=re.IGNORECASE)
     return text
 
 def psico_pseudo_rules(text):
@@ -191,25 +211,13 @@ def vaf_rules(text):
         else:
             return VAF_UP + next_char
 
-    text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)', replace_with_case, text, flags=re.IGNORECASE)
-    text = re.sub(ur'(c)(e|i|é|í)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(c)(e|i|é|í|É|Í|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE)
 
     return text
 
 def digraph_rules(text):
     """Replacement of consecutive consonant with EPA VAF"""
-
-    def replace_mn_with_case(match):
-        vowel_char = match.group(1)
-        n_char = match.group(3)
-
-        return get_vowel_circumflex(vowel_char) + n_char*2
-
-    def replace_nm_with_case(match):
-        vowel_char = match.group(1)
-        m_char = match.group(3)
-
-        return vowel_char + m_char*2
 
     def replace_lstrst_with_case(match):
         vowel_char = match.group(1)
@@ -225,100 +233,94 @@ def digraph_rules(text):
 
         return vowel_char + lr_char + t_char*2
 
-    def replace_abs_with_case(match):
+    def replace_bdnr_s_with_case(match):
         vowel_char = match.group(1)
-        cons_char = match.group(3)
+        cons_char = match.group(2)
+        s_char = match.group(3)
+        digraph_char = match.group(4)
 
-        return get_vowel_circumflex(vowel_char) + cons_char*2
-
-    def replace_trans_with_case(match):
-        tr_char = match.group(1)
-        vowel_char = match.group(2)
-        cons_char = match.group(4)
-
-        return tr_char + get_vowel_circumflex(vowel_char) + cons_char*2
-
-    def replace_digraph_with_case(match):
-        vowel_char = match.group(1)
-        to_drop_char = match.group(2)
-        digraph_char = match.group(3)
-
-        # Digraph exceptions
-        if (to_drop_char + digraph_char).lower() in (u'bl', u'cl', u'fl', u'gl', u'pl', u'br', u'cr', u'dr', u'fr', u'pr', u'tr'):
-            return vowel_char + to_drop_char + digraph_char
-        # Double 'l' digraphs => 'l-l'
-        elif digraph_char.lower() == u'l':
-            return get_vowel_circumflex(vowel_char) + digraph_char + u'-' + digraph_char
-        # General digraph rules applies
+        if cons_char.lower() + s_char.lower() == u'rs':
+            return vowel_char + cons_char + digraph_char*2
         else:
             return get_vowel_circumflex(vowel_char) + digraph_char*2
 
-    # amnesia => ânneçia.
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(m)(n)', replace_mn_with_case, text, flags=re.IGNORECASE)
-    # conmemorar => commemorâh
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(n)(m)', replace_nm_with_case, text, flags=re.IGNORECASE)
+    def replace_transpost_with_case(match):
+        init_char = match.group(1)
+        vowel_char = match.group(2)
+        cons_char = match.group(4)
+
+        if cons_char.lower() == u'l':
+            return init_char + get_vowel_circumflex(vowel_char) + cons_char + u'-' + cons_char
+        else:
+            return init_char + get_vowel_circumflex(vowel_char) + cons_char*2
+
+    def replace_l_with_case(match):
+        vowel_char = match.group(1)
+        digraph_char = match.group(3)
+
+        return get_vowel_circumflex(vowel_char) + digraph_char + u'-' + digraph_char
+
+    def replace_digraph_with_case(match):
+        vowel_char = match.group(1)
+        to_drop_char, digraph_char = match.group(2)
+
+        return get_vowel_circumflex(vowel_char) + digraph_char*2
+
     # intersticial / solsticio / superstición / cárstico => interttiçiâh / çorttiçio / çuperttiçión / cárttico
     text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(l|r)(s)(t)', replace_lstrst_with_case, text, flags=re.IGNORECASE)
-    # abstracto => âttrâtto
-    text = re.sub(ur'(a)(bs)([b-df-hj-np-tv-xz])', replace_abs_with_case, text, flags=re.IGNORECASE)
-    # transporte => Trâpporte
-    text = re.sub(ur'(tr)(a)(ns)([b-df-hj-np-tv-xz])', replace_trans_with_case, text, flags=re.IGNORECASE)
+    # aerotransporte => aerotrâpporte | translado => trâl-lado | transcendente => trâççendente | postoperatorio => pôttoperatorio | postpalatal => pôppalatal
+    text = re.sub(ur'(tr|p)(a|o)(ns|st)(b|c|ç|Ç|d|f|g|h|j|k|l|m|n|p|q|s|t|v|w|x|y|z)', replace_transpost_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    # abstracto => âttrâtto | adscrito => âccrito | perspectiva => pêrppêttiba
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|d|n|r)(s)(b|c|ç|Ç|d|f|g|h|j|k|l|m|n|p|q|s|t|v|w|x|y|z)', replace_bdnr_s_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    # atlántico => âl-lántico | orla => ôl-la | adlátere => âl-látere | tesla => têl-la ...
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d|j|r|s|t|x|z)(l)', replace_l_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
-    # General digraph rules
-    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|d|f|g|j|p|s|t|x|z)(b|c|ç|d|f|g|h|l|m|n|p|q|r|t|x|y)', replace_digraph_with_case, text, flags=re.IGNORECASE)
+    # General digraph rules.
+    text = re.sub(ur'(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(' + u'|'.join(DIGRAPHS) + ')', replace_digraph_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
 def word_ending_rules(text):
 
     def replace_d_end_with_case(match):
-        stressed_rules = {
-            u'a':u'â', u'e':u'ê', u'A':u'Â', u'E':u'Ê',
-            u'i':u'î', u'o':u'ô', u'u':u'û', u'I':u'Î', u'O':u'Ô', u'U':u'Û'
-        }
         unstressed_rules = {
-            u'ad':u'á', u'aD':u'á', u'ed':u'é', u'eD':u'é',
-            u'AD':u'Á', u'Ad':u'Á', u'ED':u'É', u'Ed':u'É',
-            u'id':u'îh', u'od':u'ôh', u'ud':u'ûh',
-            u'iD':u'îH', u'oD':u'ôH', u'uD':u'ûH',
-            u'ID':u'ÎH', u'OD':u'ÔH', u'UD':u'ÛH',
-            u'Id':u'Îh', u'Od':u'Ôh', u'Ud':u'Ûh'
+            u'a':u'â', u'A':u'Â', u'á':u'â', u'Á':u'Â',
+            u'e':u'ê', u'E':u'Ê', u'é':u'ê', u'É':u'Ê',
+            u'i':u'î', u'I':u'Î', u'í':u'î', u'Í':u'Î',
+            u'o':u'ô', u'O':u'Ô', u'ó':u'ô', u'Ó':u'Ô',
+            u'u':u'û', u'U':u'Û', u'ú':u'û', u'Ú':u'Û'
         }
 
-        word = match.group(0)
-        prefix = match.group(1)
-        suffix = match.group(2)
-
-        if any(s in word for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
-            return prefix + stressed_rules[suffix[0]]
-        else:
-            return prefix + unstressed_rules[suffix]
-
-    def replace_lzr_end_with_case(match):
-        repl_rules = {
-            u'a':u'â', u'e':u'ê', u'i':u'î', u'o':u'ô', u'u':u'û',
-            u'A':u'Â', u'E':u'Ê',u'I':u'Î', u'O':u'Ô', u'U':u'Û'
+        stressed_rules = {
+            u'a':u'á', u'A':u'Á', u'á':u'á', u'Á':u'Á',
+            u'e':u'é', u'E':u'É', u'é':u'é', u'É':u'É',
+            u'i':u'î', u'I':u'Î', u'í':u'î', u'Í':u'Î',
+            u'o':u'ô', u'O':u'Ô', u'ó':u'ô', u'Ó':u'Ô',
+            u'u':u'û', u'U':u'Û', u'ú':u'û', u'Ú':u'Û'
         }
 
-        word = match.group(0)
         prefix = match.group(1)
         suffix_vowel = match.group(2)
         suffix_const = match.group(3)
 
-        if any(s in word for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
-            return prefix + repl_rules[suffix_vowel]
+        if any(s in prefix for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            return prefix + unstressed_rules[suffix_vowel]
         else:
-            if suffix_const.isupper():
-                return prefix + repl_rules[suffix_vowel] + 'H'
+            if suffix_vowel in (u'a',u'e',u'A',u'E',u'á',u'é',u'Á',u'É'):
+                return prefix + stressed_rules[suffix_vowel]
             else:
-                return prefix + repl_rules[suffix_vowel] + 'h'
+                if suffix_const.isupper():
+                    return prefix + stressed_rules[suffix_vowel] + 'H'
+                else:
+                    return prefix + stressed_rules[suffix_vowel] + 'h'
 
     def replace_s_end_with_case(match):
         repl_rules = {
-            u'a':u'â', u'e':u'ê', u'i':u'î', u'o':u'ô', u'u':u'û',
-            u'A':u'Â', u'E':u'Ê',u'I':u'Î', u'O':u'Ô', u'U':u'Û',
-            u'á':u'â', u'é':u'ê', u'í':u'î', u'ó':u'ô', u'ú':u'û',
-            u'Á':u'Â', u'É':u'Ê',u'Í':u'Î', u'Ó':u'Ô', u'Ú':u'Û'
+            u'a':u'â', u'A':u'Â', u'á':u'â', u'Á':u'Â',
+            u'e':u'ê', u'E':u'Ê', u'é':u'ê', u'É':u'Ê',
+            u'i':u'î', u'I':u'Î', u'í':u'î', u'Í':u'Î',
+            u'o':u'ô', u'O':u'Ô', u'ó':u'ô', u'Ó':u'Ô',
+            u'u':u'û', u'U':u'Û', u'ú':u'û', u'Ú':u'Û'
         }
 
         prefix = match.group(1)
@@ -333,28 +335,113 @@ def word_ending_rules(text):
         else:
             return prefix + repl_rules[suffix_vowel]
 
-    text = re.sub(ur'\b(\w+?)(ad|ed|id|od|ud)\b', replace_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    def replace_const_end_with_case(match):
+        repl_rules = {
+            u'a':u'â', u'A':u'Â', u'á':u'â', u'Á':u'Â',
+            u'e':u'ê', u'E':u'Ê', u'é':u'ê', u'É':u'Ê',
+            u'i':u'î', u'I':u'Î', u'í':u'î', u'Í':u'Î',
+            u'o':u'ô', u'O':u'Ô', u'ó':u'ô', u'Ó':u'Ô',
+            u'u':u'û', u'U':u'Û', u'ú':u'û', u'Ú':u'Û'
+        }
+
+        prefix = match.group(1)
+        suffix_vowel = match.group(2)
+        suffix_const = match.group(3)
+
+        if any(s in prefix for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            return prefix + repl_rules[suffix_vowel]
+        else:
+            if suffix_const.isupper():
+                return prefix + repl_rules[suffix_vowel] + 'H'
+            else:
+                return prefix + repl_rules[suffix_vowel] + 'h'
+
+    def replace_eps_end_with_case(match):
+
+        prefix = match.group(1)
+        suffix_vowel = match.group(2)
+        suffix_const = match.group(3)
+
+        if any(s in prefix for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            if suffix_vowel.isupper():
+                return prefix + u'Ê'
+            else:
+                return prefix + u'ê'
+        else:
+            # Leave as it is. There shouldn't be any word with -eps ending withough accent.z
+            return prefix + suffix_vowel + suffix_const
+
+    def replace_intervowel_d_end_with_case(match):
+
+        exceptions = [
+            "fado", "cado", "nado", "priado",
+            "fabada", "fada", "ada", "hada", "lada", "rada",
+            "aikido", "buxido", "xido", "cuido", "cupido", "descuido", "despido", "ehido", "embido", "fido", "gido", "ido", "infido", "laido", "libido", "nido", "nucleido", "sonido", "suido"
+        ]
+
+        prefix = match.group(1)
+        suffix_vowel_a = match.group(2)
+        suffix_d_char = match.group(3)
+        suffix_vowel_b = match.group(4)
+
+        suffix = suffix_vowel_a + suffix_d_char + suffix_vowel_b
+        word = prefix + suffix
+
+        if word.lower() in exceptions:
+            return word
+        elif not any(s in prefix for s in (u'á',u'é',u'í',u'ó',u'ú',u'Á',u'É',u'Í',u'Ó',u'Ú')):
+            # Ending word -ada rules
+            if suffix.lower() == u'ada':
+                if suffix_vowel_b.isupper():
+                    return prefix + u'Á'
+                else:
+                    return prefix + u'á'
+            # Ending word -ado rules
+            elif suffix.lower() == u'ado':
+                return prefix + suffix_vowel_a + suffix_vowel_b
+            # Ending word -ido -ído rules
+            elif suffix.lower() in (u'ido', u'ído'):
+                if suffix_vowel_a.isupper():
+                    return prefix + u'Í' + suffix_vowel_b
+                else:
+                    return prefix + u'í' + suffix_vowel_b
+            else:
+                return word
+        else:
+            return word
+
+    text = re.sub(ur'\b(\w+?)(e)(ps)\b', replace_eps_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d)\b', replace_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s)\b', replace_s_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
-    text = re.sub(ur'\b(\w+?)(a|e|i|o|u)(l|z|r)\b', replace_lzr_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|f|g|j|l|p|r|t|x|z)\b', replace_const_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+
+    # Intervowel /d/ replacements
+    text = re.sub(ur'\b(\w+?)(a|i|í|Í)(d)(o|a)\b', replace_intervowel_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
 # Main function
-def cas_to_epa(text):
-    # text = unicode(text, 'utf-8')
-    text = h_rules(text)
-    text = x_rules(text)
-    text = ch_rules(text)
-    text = gj_rules(text)
-    text = v_rules(text)
-    text = ll_rules(text)
-    text = l_rules(text)
-    text = psico_pseudo_rules(text)
-    text = vaf_rules(text)
-    text = digraph_rules(text)
-    text = word_ending_rules(text)
+def cas_to_epa(text, debug=False):
+    rules = [
+        h_rules,
+        x_rules,
+        ch_rules,
+        gj_rules,
+        v_rules,
+        ll_rules,
+        l_rules,
+        psico_pseudo_rules,
+        vaf_rules,
+        word_ending_rules,
+        digraph_rules
+    ]
+
+    for rule in rules:
+        text = rule(text)
+        if debug: print rule.func_name + ' => ' + text
 
     return text
+
 
 class EPAError(Exception):
     def __init__(self, message, errors):

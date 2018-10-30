@@ -211,8 +211,8 @@ def vaf_rules(text):
         else:
             return VAF_UP + next_char
 
-    text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE)
-    text = re.sub(ur'(c)(e|i|é|í|É|Í|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE)
+    text = re.sub(ur'(z|s)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú|â|ê|î|ô|û|Â|Ê|Î|Ô|Û)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(c)(e|i|é|í|É|Í|ê|î|Ê|Î)', replace_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 
@@ -413,7 +413,7 @@ def word_ending_rules(text):
     text = re.sub(ur'\b(\w+?)(e)(ps)\b', replace_eps_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(d)\b', replace_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
     text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(s)\b', replace_s_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
-    text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|f|g|j|l|p|r|t|x|z)\b', replace_const_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'\b(\w+?)(a|e|i|o|u|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(b|c|f|g|j|k|l|p|r|t|x|z)\b', replace_const_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     # Intervowel /d/ replacements
     text = re.sub(ur'\b(\w+?)(a|i|í|Í)(d)(o|a)\b', replace_intervowel_d_end_with_case, text, flags=re.IGNORECASE|re.UNICODE)

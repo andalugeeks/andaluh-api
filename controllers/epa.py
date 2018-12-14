@@ -151,7 +151,7 @@ def gj_rules(text):
     # buen / abuel / sabues => guen / aguel / sagues
     # TODO: I've the gut feeling the following two regex can be merged into one.
     text = re.sub(ur'(b)(uen)', lambda match: u'g' + match.group(2) if match.group(1).islower() else u'G' + match.group(2), text, flags=re.IGNORECASE|re.UNICODE)
-    text = re.sub(ur'(?P<s>s?)(?P<a>a?)(?P<b>b)(?P<ue>ue)(?P<const>l|s)', replace_g_with_case, text, flags=re.IGNORECASE|re.UNICODE)
+    text = re.sub(ur'(?P<s>s?)(?P<a>a?)(?<!m)(?P<b>b)(?P<ue>ue)(?P<const>l|s)', replace_g_with_case, text, flags=re.IGNORECASE|re.UNICODE)
 
     return text
 

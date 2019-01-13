@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+   epa-api:
+     image: 45041391ff91
+     restart: always
+     ports:
+       - 8080:5000
+
+volumes:
+    db_data: {}

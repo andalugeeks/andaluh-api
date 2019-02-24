@@ -1,18 +1,65 @@
-# flask-restful-boilerplate
-Boilerplate template for a Python Flask_Restful applications with Flask-SQLAlchemy and SQLite example.
-Use this template to quick start rest api development with flask.
+# Andaluh-api
 
-## Install instructions
-  - Install postman chrome extension
-  - Make sure you have working installation of python 3 if not get it installed
-  - Create a virtualenv with command : python -m venv venv
-  - Activate virtualenv
-    - Windows : venv\Scripts\activate
-    - Mac and Ubuntu : . venv/bin/activate
-  - Install dependencies : pip install -r requirements.txt
+Python-Flask API to serve [andaluh-py](https://github.com/andalugeeks/andaluh-py): the español (spanish) spelling to andaluz proposals transliteration package.
 
+## Table of Contents
 
-Once you install or deploy app you can test it by calling the GET, POST, PUT, and DELETE method of /api/hello with postman.
+- [Description](#description)
+- [Usage](#usage)
+- [Running](#running)
+- [Roadmap](#roadma)
+- [Support](#support)
+- [Contributing](#contributing)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+## Description
 
+The **Andalusian varieties of [Spanish]** (Spanish: *andaluz*; Andalusian) are spoken in Andalusia, Ceuta, Melilla, and Gibraltar. They include perhaps the most distinct of the southern variants of peninsular Spanish, differing in many respects from northern varieties, and also from Standard Spanish. Further info: https://en.wikipedia.org/wiki/Andalusian_Spanish.
+
+This application provides with a basic python-flask API for [andaluh-py](https://github.com/andalugeeks/andaluh-py). Further info: https://github.com/andalugeeks/andaluh-py
+
+## Usage
+
+The API only provides one GET /epa method, so far. It transliterates español (spanish) to [andaluz EPA](https://andaluhepa.wordpress.com) proposal. It is published on port 5000 (Python-FLASK default port). Output is encoded with unicode.
+
+```
+$ curl -X GET "http://localhost:5000/epa?texto=El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja." 
+{"El veloz murci\u00e9lago hind\u00fa com\u00eda feliz cardillo y kiwi. La cig\u00fce\u00f1a tocaba el saxof\u00f3n detr\u00e1s del palenque de paja.": "Er bel\u00f4h mur\u00e7i\u00e9lago ind\u00fa com\u00eda fel\u00eeh cardiyo y kiwi. La \u00e7igue\u00f1a tocaba er \u00e7\u00e2\u00e7\u00e7of\u00f3n detr\u00e2h der palenque de paha."}
+```
+
+GET /epa method accepts two parameters:
+
+* **vaf** (voiceless alveolar fricative /s/): Use it to enforce seseo (assign "s"), zezeo (assign "z") or heheo (assign "h") instead of cedilla.
+* **vvf** (voiceless velar fricative /x/): Use it to keep /x/ sounds as J instead of /h/ by assigning "j".
+
+```
+$ curl -X GET "http://localhost:5000/epa?texto=El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja.&vaf=z&vvf=j"
+{"El veloz murci\u00e9lago hind\u00fa com\u00eda feliz cardillo y kiwi. La cig\u00fce\u00f1a tocaba el saxof\u00f3n detr\u00e1s del palenque de paja.": "Er bel\u00f4h murzi\u00e9lago ind\u00fa com\u00eda fel\u00eeh cardiyo y kiwi. La zigue\u00f1a tocaba er z\u00e2zzof\u00f3n detr\u00e2h der palenque de paja."}
+```
+
+## Running
+
+Directly
+
+```
+$ pip install -r requirements.txt
+$ python app/server.py
+```
+
+Dockerised
+
+```
+$ docker-compose up --build -d
+```
+
+## Roadmap
+
+* Migrating to python3
+* Adding kong as api management tool
+
+## Support
+
+Please [open an issue](https://github.com/andalugeeks/andaluh-api/issues/new) for support.
+
+## Contributing
+
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and open a pull request.

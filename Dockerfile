@@ -1,19 +1,28 @@
-FROM ubuntu:18.04
+FROM python:2.7
 
 LABEL maintainer="felixonta@gmail.com"
 
-RUN apt-get update -y && \
-    apt-get install -y python-pip python-dev
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
+        libatlas-base-dev gfortran nginx supervisor
 
-# We copy just the requirements.txt first to leverage Docker cache
-COPY ./requirements.txt /app/requirements.txt
+RUN pip install uwsgi
 
-WORKDIR /app
+COPY ./requirements.txt /project/requirements.txt
+RUN pip install -r /project/requirements.txt
 
-RUN pip install -r requirements.txt
+RUN useradd --no-create-home nginx
 
-COPY . /app
+RUN rm /etc/nginx/sites-enabled/default
+RUN rm -r /root/.cache
 
-ENTRYPOINT [ "python" ]
+COPY nginx.conf /etc/nginx/
+COPY flask-site-nginx.conf /etc/nginx/conf.d/
+COPY uwsgi.ini /etc/uwsgi/
+COPY supervisord.conf /etc/
 
-CMD [ "andaluhapi.py" ]
+COPY app /project/app
+
+WORKDIR /project
+
+CMD ["/usr/bin/supervisord"]

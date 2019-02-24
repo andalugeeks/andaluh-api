@@ -1,11 +1,10 @@
 version: '3.3'
 
 services:
-   epa-api:
-     image: 45041391ff91
+   andaluh-api:
+     image: andaluh/api:v1
+     container_name: andaluh_api
      restart: always
+     build: .
      ports:
-       - 8080:5000
-
-volumes:
-    db_data: {}
+       - "8000:5000"

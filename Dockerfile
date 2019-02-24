@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-# MAINTANER Your Name "felixonta@gmail.com"
+LABEL maintainer="felixonta@gmail.com"
 
 RUN apt-get update -y && \
     apt-get install -y python-pip python-dev
@@ -16,4 +16,4 @@ COPY . /app
 
 ENTRYPOINT [ "python" ]
 
-CMD [ "api.py" ]
+CMD [ "andaluhapi.py" ]

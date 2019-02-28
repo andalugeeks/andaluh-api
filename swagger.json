@@ -1,0 +1,99 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Transliterate español (spanish) spelling to andaluz proposals using andalu-py. Further info: https://github.com/andalugeeks/andaluh-py",
+    "version": "0.1.1",
+    "title": "Andaluh API",
+    "termsOfService": "https://andaluh.es/terms/",
+    "contact": {
+      "email": "andalugeeks@gmail.com"
+    },
+    "license": {
+      "name": "Affero GPL v3.0",
+      "url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
+    }
+  },
+  "host": "api.andaluh.es",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "transliteration",
+      "description": "Spanish text to transliterate to andaluz proposals"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/epa": {
+      "get": {
+        "tags": [
+          "transliteration"
+        ],
+        "summary": "Transliterates spanish text to andaluh EPA",
+        "operationId": "getInventory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "spanish",
+            "in": "query",
+            "description": "Spanish text to transliterate",
+            "required": false,
+            "default": "Toda comunidad lingüística tiene derecho a codificar, estandarizar, preservar, desarrollar y promover su sistema lingüístico, sin interferencias inducidas o forzadas.\" Art. 9 de la Declaración Universal de los Derechos Lingüísticos",
+            "type": "string"
+          },
+          {
+            "name": "vaf",
+            "in": "query",
+            "description": "Voiceless alveolar fricative /s/: Use it to enforce seseo (assign \"s\"), zezeo (assign \"z\") or heheo (assign \"h\") instead of cedilla.",
+            "required": false,
+            "default": "ç",
+            "type": "string"
+          },
+          {
+            "name": "vvf",
+            "in": "query",
+            "description": "Voiceless velar fricative /x/: Use it to keep /x/ sounds as J instead of /h/ by assigning \"j\"",
+            "required": false,
+            "default": "h",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Transliteration"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Transliteration": {
+      "type": "object",
+      "properties": {
+        "spanish": {
+          "type": "string"
+        },
+        "andaluh": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "vaf": {
+              "type": "string"
+            },
+            "vvf": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

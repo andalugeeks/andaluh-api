@@ -9,7 +9,7 @@ from andaluh.defs import VAF, VVF
 
 class andaluhController(Resource):
     args = {
-        'texto': fields.Str(
+        'spanish': fields.Str(
             type_=unicode,
             required=True
         ),
@@ -24,5 +24,12 @@ class andaluhController(Resource):
     }
 
     @use_kwargs(args)
-    def get(self, texto, vaf=VAF, vvf=VVF):
-        return {texto: andaluh.epa(texto, vaf=vaf, vvf=vvf)}
+    def get(self, spanish, vaf=VAF, vvf=VVF):
+        return {
+            "spanish": spanish,
+            "andaluh": andaluh.epa(spanish, vaf=vaf, vvf=vvf),
+            "rules": {
+                "vaf": vaf,
+                "vvf": vvf
+            }
+        }

@@ -59,6 +59,14 @@
             "required": false,
             "default": "h",
             "type": "string"
+          },
+          {
+            "name": "escapeLinks",
+            "in": "query",
+            "description": "Ignore URLs, mentions and hashtags on the transliteration",
+            "required": false,
+            "default": false,
+            "type": "boolean"
           }
         ],
         "responses": {
@@ -90,6 +98,9 @@
             },
             "vvf": {
               "type": "string"
+            },
+            "escapeLinks": {
+              "type": "boolean"
             }
           }
         }

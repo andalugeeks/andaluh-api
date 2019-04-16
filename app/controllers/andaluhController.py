@@ -20,16 +20,21 @@ class andaluhController(Resource):
         'vvf': fields.Str(
             type_=unicode,
             required=False
+        ),
+        'escapeLinks': fields.Str(
+            type_=bool,
+            required=False
         )
     }
 
     @use_kwargs(args)
-    def get(self, spanish, vaf=VAF, vvf=VVF):
+    def get(self, spanish, vaf=VAF, vvf=VVF, escapeLinks=False):
         return {
             "spanish": spanish,
-            "andaluh": andaluh.epa(spanish, vaf=vaf, vvf=vvf),
+            "andaluh": andaluh.epa(spanish, vaf=vaf, vvf=vvf, escapeLinks=escapeLinks),
             "rules": {
                 "vaf": vaf,
-                "vvf": vvf
+                "vvf": vvf,
+                "escapeLinks": escapeLinks
             }
         }

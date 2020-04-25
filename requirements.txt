@@ -13,4 +13,4 @@ gunicorn==19.6.0
 webargs
 Flask-CORS
 flask-swagger-ui
-git+git://github.com/andalugeeks/andaluh-py@master#egg=andaluh
+andaluh==0.1.2

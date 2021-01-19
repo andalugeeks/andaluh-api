@@ -7,7 +7,6 @@ Python-Flask API to serve [andaluh-py](https://github.com/andalugeeks/andaluh-py
 - [Description](#description)
 - [Usage](#usage)
 - [Running](#running)
-- [Roadmap](#roadma)
 - [Support](#support)
 - [Contributing](#contributing)
 
@@ -50,11 +49,6 @@ Dockerised
 ```
 $ docker-compose up --build -d
 ```
-
-## Roadmap
-
-* Migrating to python3
-* Adding kong as api management tool
 
 ## Support
 

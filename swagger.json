@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Transliterate español (spanish) spelling to andaluz proposals using andalu-py. Further info: https://github.com/andalugeeks/andaluh-py",
-    "version": "0.1.1",
+    "version": "0.2.1",
     "title": "Andaluh API",
     "termsOfService": "https://andaluh.es/terms/",
     "contact": {

@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api
-from controllers import andaluhController
+from app.controllers import andaluhController
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 

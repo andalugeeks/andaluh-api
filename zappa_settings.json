@@ -1,0 +1,17 @@
+{
+    "dev": {
+        "app_function": "app.server.app",
+        "profile_name": "zappa",
+        "project_name": "andaluh-api",
+        "runtime": "python3.8",
+        "s3_bucket": "zappa-deployment-s3-bucket"
+    },
+
+    "prod": {
+        "app_function": "app.server.app",
+        "profile_name": "zappa",
+        "project_name": "andaluh-api",
+        "runtime": "python3.8",
+        "s3_bucket": "zappa-deployment-s3-bucket"
+    }
+}

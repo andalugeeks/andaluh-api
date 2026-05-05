@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Transliterate español (spanish) spelling to andaluz proposals using andalu-py. Further info: https://github.com/andalugeeks/andaluh-py",
-    "version": "0.2.1",
+    "description": "Transliterate Spanish text to Andaluh EPA and optionally return Andaluh verb conjugations. Further info: https://github.com/andalugeeks/andaluh-py",
+    "version": "0.3.0",
     "title": "Andaluh API",
     "termsOfService": "https://andaluh.es/terms/",
     "contact": {
@@ -31,7 +31,7 @@
           "transliteration"
         ],
         "summary": "Transliterates spanish text to andaluh EPA",
-        "operationId": "getInventory",
+        "operationId": "getEpa",
         "produces": [
           "application/json"
         ],
@@ -40,7 +40,7 @@
             "name": "spanish",
             "in": "query",
             "description": "Spanish text to transliterate",
-            "required": false,
+            "required": true,
             "default": "Toda comunidad lingüística tiene derecho a codificar, estandarizar, preservar, desarrollar y promover su sistema lingüístico, sin interferencias inducidas o forzadas.\" Art. 9 de la Declaración Universal de los Derechos Lingüísticos",
             "type": "string"
           },
@@ -50,7 +50,8 @@
             "description": "Voiceless alveolar fricative /s/: Use it to enforce seseo (assign \"s\"), zezeo (assign \"z\") or heheo (assign \"h\") instead of cedilla.",
             "required": false,
             "default": "ç",
-            "type": "string"
+            "type": "string",
+            "enum": ["ç", "z", "s", "h"]
           },
           {
             "name": "vvf",
@@ -58,12 +59,21 @@
             "description": "Voiceless velar fricative /x/: Use it to keep /x/ sounds as J instead of /h/ by assigning \"j\"",
             "required": false,
             "default": "h",
-            "type": "string"
+            "type": "string",
+            "enum": ["h", "j"]
           },
           {
             "name": "escapeLinks",
             "in": "query",
             "description": "Ignore URLs, mentions and hashtags on the transliteration",
+            "required": false,
+            "default": false,
+            "type": "boolean"
+          },
+          {
+            "name": "conjugate",
+            "in": "query",
+            "description": "Return Andaluh verb conjugation data using andaluh-verbs when true.",
             "required": false,
             "default": false,
             "type": "boolean"
@@ -74,6 +84,23 @@
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/Transliteration"
+            },
+            "examples": {
+              "application/json": {
+                "spanish": "jocifar",
+                "andaluh": "hoçifâh",
+                "rules": {
+                  "vaf": "ç",
+                  "vvf": "h",
+                  "escapeLinks": false,
+                  "conjugate": true
+                },
+                "conjugation": {
+                  "infinitibo": [
+                    "hoçifâh"
+                  ]
+                }
+              }
             }
           }
         }
@@ -101,8 +128,19 @@
             },
             "escapeLinks": {
               "type": "boolean"
+            },
+            "conjugate": {
+              "type": "boolean"
             }
           }
+        },
+        "conjugation": {
+          "type": "object",
+          "description": "Optional conjugation payload returned when the conjugate query parameter is true."
+        },
+        "conjugation_error": {
+          "type": "string",
+          "description": "Optional error string returned if conjugation was requested but could not be generated."
         }
       }
     }

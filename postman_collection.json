@@ -1,0 +1,157 @@
+{
+  "info": {
+    "_postman_id": "7c0b3a8f-0f8f-4c7c-9b9b-andaluhapi01",
+    "name": "Andaluh API Examples",
+    "description": "Sample requests and responses for the Andaluh API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "EPA transliteration",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/epa?spanish=El%20veloz%20murci%C3%A9lago%20hind%C3%BA%20com%C3%ADa%20feliz%20cardillo%20y%20kiwi&vaf=%C3%A7&vvf=h",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "epa"
+          ],
+          "query": [
+            {
+              "key": "spanish",
+              "value": "El veloz murciélago hindú comía feliz cardillo y kiwi"
+            },
+            {
+              "key": "vaf",
+              "value": "ç"
+            },
+            {
+              "key": "vvf",
+              "value": "h"
+            }
+          ]
+        },
+        "description": "Transliterates Spanish text to Andaluh EPA using the default çeçeo and /h/ rules."
+      },
+      "response": [
+        {
+          "name": "Example 1 response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/epa?spanish=El%20veloz%20murci%C3%A9lago%20hind%C3%BA%20com%C3%ADa%20feliz%20cardillo%20y%20kiwi&vaf=%C3%A7&vvf=h",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "epa"
+              ],
+              "query": [
+                {
+                  "key": "spanish",
+                  "value": "El veloz murciélago hindú comía feliz cardillo y kiwi"
+                },
+                {
+                  "key": "vaf",
+                  "value": "ç"
+                },
+                {
+                  "key": "vvf",
+                  "value": "h"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"spanish\": \"El veloz murciélago hindú comía feliz cardillo y kiwi\",\n  \"andaluh\": \"Er belôh murçiélago indú comía felîh cardiyo y kiwi\",\n  \"rules\": {\n    \"vaf\": \"ç\",\n    \"vvf\": \"h\",\n    \"escapeLinks\": false,\n    \"conjugate\": false\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "EPA transliteration with conjugation",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/epa?spanish=jocifar&conjugate=true",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "epa"
+          ],
+          "query": [
+            {
+              "key": "spanish",
+              "value": "jocifar"
+            },
+            {
+              "key": "conjugate",
+              "value": "true"
+            }
+          ]
+        },
+        "description": "Transliterates a Spanish verb and returns Andaluh conjugation data."
+      },
+      "response": [
+        {
+          "name": "Example 2 response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/epa?spanish=jocifar&conjugate=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "epa"
+              ],
+              "query": [
+                {
+                  "key": "spanish",
+                  "value": "jocifar"
+                },
+                {
+                  "key": "conjugate",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"spanish\": \"jocifar\",\n  \"andaluh\": \"hoçifâh\",\n  \"rules\": {\n    \"vaf\": \"ç\",\n    \"vvf\": \"h\",\n    \"escapeLinks\": false,\n    \"conjugate\": true\n  },\n  \"conjugation\": {\n    \"infinitibo\": [\n      \"hoçifâh\"\n    ],\n    \"herundio\": [\n      \"hoçifando\"\n    ],\n    \"partiçipo\": [\n      \"hoçifao\"\n    ],\n    \"indicatibo\": {\n      \"preçente\": {\n        \"yo\": \"hoçifo\",\n        \"tú\": \"hoçifâ\",\n        \"él / eya\": \"hoçifa\",\n        \"ûtté\": \"hoçifa\",\n        \"noçotrô, noçotrâ\": \"hoçifamô\",\n        \"boçotrô, boçotrâ\": \"hoçifáî\",\n        \"ûttedê\": \"hoçifáî\",\n        \"eyô, eyâ\": \"hoçifan\"\n      },\n      \"pretérito-imperfêtto\": {\n        \"yo\": \"hoçifaba\",\n        \"tú\": \"hoçifabâ\",\n        \"él / eya\": \"hoçifaba\",\n        \"ûtté\": \"hoçifaba\",\n        \"noçotrô, noçotrâ\": \"hoçifábamô\",\n        \"boçotrô, boçotrâ\": \"hoçifabaî\",\n        \"ûttedê\": \"hoçifabaî\",\n        \"eyô, eyâ\": \"hoçifaban\"\n      },\n      \"pretérito-perfêtto-çimple\": {\n        \"yo\": \"hoçifé\",\n        \"tú\": \"hoçifâtte\",\n        \"él / eya\": \"hoçifó\",\n        \"ûtté\": \"hoçifó\",\n        \"noçotrô, noçotrâ\": \"hoçifamô\",\n        \"boçotrô, boçotrâ\": \"hoçifâtteî\",\n        \"ûttedê\": \"hoçifâtteî\",\n        \"eyô, eyâ\": \"hoçifaron\"\n      },\n      \"futuro\": {\n        \"yo\": \"hoçifaré\",\n        \"tú\": \"hoçifarâh\",\n        \"él / eya\": \"hoçifará\",\n        \"ûtté\": \"hoçifará\",\n        \"noçotrô, noçotrâ\": \"hoçifaremô\",\n        \"boçotrô, boçotrâ\": \"hoçifaréî\",\n        \"ûttedê\": \"hoçifaréî\",\n        \"eyô, eyâ\": \"hoçifarán\"\n      },\n      \"pretérito-perfêtto-compuêtto\": {\n        \"yo\": \"e hoçifao\",\n        \"tú\": \"âh hoçifao\",\n        \"él / eya\": \"a hoçifao\",\n        \"ûtté\": \"a hoçifao\",\n        \"noçotrô, noçotrâ\": \"emô hoçifao\",\n        \"boçotrô, boçotrâ\": \"abéî hoçifao\",\n        \"ûttedê\": \"abéî hoçifao\",\n        \"eyô, eyâ\": \"an hoçifao\"\n      },\n      \"pretérito-plûccuamperfêtto\": {\n        \"yo\": \"abía hoçifao\",\n        \"tú\": \"abíâ hoçifao\",\n        \"él / eya\": \"abía hoçifao\",\n        \"ûtté\": \"abía hoçifao\",\n        \"noçotrô, noçotrâ\": \"abíamô hoçifao\",\n        \"boçotrô, boçotrâ\": \"abíaî hoçifao\",\n        \"ûttedê\": \"abíaî hoçifao\",\n        \"eyô, eyâ\": \"abían hoçifao\"\n      },\n      \"pretérito-anteriôh\": {\n        \"yo\": \"ube hoçifao\",\n        \"tú\": \"ubîtte hoçifao\",\n        \"él / eya\": \"ubo hoçifao\",\n        \"ûtté\": \"ubo hoçifao\",\n        \"noçotrô, noçotrâ\": \"ubimô hoçifao\",\n        \"boçotrô, boçotrâ\": \"ubîtteî hoçifao\",\n        \"ûttedê\": \"ubîtteî hoçifao\",\n        \"eyô, eyâ\": \"ubieron hoçifao\"\n      },\n      \"futuro-perfêtto\": {\n        \"yo\": \"abré hoçifao\",\n        \"tú\": \"abrâh hoçifao\",\n        \"él / eya\": \"abrá hoçifao\",\n        \"ûtté\": \"abrá hoçifao\",\n        \"noçotrô, noçotrâ\": \"abremô hoçifao\",\n        \"boçotrô, boçotrâ\": \"abréî hoçifao\",\n        \"ûttedê\": \"abréî hoçifao\",\n        \"eyô, eyâ\": \"abrán hoçifao\"\n      }\n    },\n    \"çûhhuntibo\": {\n      \"preçente\": {\n        \"yo\": \"hoçife\",\n        \"tú\": \"hoçifê\",\n        \"él / eya\": \"hoçife\",\n        \"ûtté\": \"hoçife\",\n        \"noçotrô, noçotrâ\": \"hoçifemô\",\n        \"boçotrô, boçotrâ\": \"hoçiféî\",\n        \"ûttedê\": \"hoçiféî\",\n        \"eyô, eyâ\": \"hoçifen\"\n      },\n      \"pretérito-imperfêtto-1\": {\n        \"yo\": \"hoçifara\",\n        \"tú\": \"hoçifarâ\",\n        \"él / eya\": \"hoçifara\",\n        \"ûtté\": \"hoçifara\",\n        \"noçotrô, noçotrâ\": \"hoçifáramô\",\n        \"boçotrô, boçotrâ\": \"hoçifaraî\",\n        \"ûttedê\": \"hoçifaraî\",\n        \"eyô, eyâ\": \"hoçifaran\"\n      },\n      \"pretérito-imperfêtto-2\": {\n        \"yo\": \"hoçifaçe\",\n        \"tú\": \"hoçifaçê\",\n        \"él / eya\": \"hoçifaçe\",\n        \"ûtté\": \"hoçifaçe\",\n        \"noçotrô, noçotrâ\": \"hoçifáçemô\",\n        \"boçotrô, boçotrâ\": \"hoçifaçeî\",\n        \"ûttedê\": \"hoçifaçeî\",\n        \"eyô, eyâ\": \"hoçifaçen\"\n      },\n      \"futuro\": {\n        \"yo\": \"hoçifare\",\n        \"tú\": \"hoçifarê\",\n        \"él / eya\": \"hoçifare\",\n        \"ûtté\": \"hoçifare\",\n        \"noçotrô, noçotrâ\": \"hoçifáremô\",\n        \"boçotrô, boçotrâ\": \"hoçifareî\",\n        \"ûttedê\": \"hoçifareî\",\n        \"eyô, eyâ\": \"hoçifaren\"\n      },\n      \"pretérito-perfêtto\": {\n        \"yo\": \"aya hoçifao\",\n        \"tú\": \"ayâ hoçifao\",\n        \"él / eya\": \"aya hoçifao\",\n        \"ûtté\": \"aya hoçifao\",\n        \"noçotrô, noçotrâ\": \"ayamô hoçifao\",\n        \"boçotrô, boçotrâ\": \"ayáî hoçifao\",\n        \"ûttedê\": \"ayáî hoçifao\",\n        \"eyô, eyâ\": \"ayan hoçifao\"\n      },\n      \"pretérito-plûccuamperfêtto-1\": {\n        \"yo\": \"ubiera hoçifao\",\n        \"tú\": \"ubierâ hoçifao\",\n        \"él / eya\": \"ubiera hoçifao\",\n        \"ûtté\": \"ubiera hoçifao\",\n        \"noçotrô, noçotrâ\": \"ubiéramô hoçifao\",\n        \"boçotrô, boçotrâ\": \"ubieraî hoçifao\",\n        \"ûttedê\": \"ubieraî hoçifao\",\n        \"eyô, eyâ\": \"ubieran hoçifao\"\n      },\n      \"pretérito-plûccuamperfêtto-2\": {\n        \"yo\": \"ubieçe hoçifao\",\n        \"tú\": \"ubieçê hoçifao\",\n        \"él / eya\": \"ubieçe hoçifao\",\n        \"ûtté\": \"ubieçe hoçifao\",\n        \"noçotrô, noçotrâ\": \"ubiéçemô hoçifao\",\n        \"boçotrô, boçotrâ\": \"ubieçeî hoçifao\",\n        \"ûttedê\": \"ubieçeî hoçifao\",\n        \"eyô, eyâ\": \"ubieçen hoçifao\"\n      },\n      \"futuro-perfêtto\": {\n        \"yo\": \"ubiere hoçifao\",\n        \"tú\": \"ubierê hoçifao\",\n        \"él / eya\": \"ubiere hoçifao\",\n        \"ûtté\": \"ubiere hoçifao\",\n        \"noçotrô, noçotrâ\": \"ubiéremô hoçifao\",\n        \"boçotrô, boçotrâ\": \"ubiereî hoçifao\",\n        \"ûttedê\": \"ubiereî hoçifao\",\n        \"eyô, eyâ\": \"ubieren hoçifao\"\n      }\n    },\n    \"imperatibo\": {\n      \"afirmatibo\": {\n        \"tú\": \"hoçifa\",\n        \"ûtté\": \"hoçife\",\n        \"noçotrô / noçotrâ\": \"hoçifemô\",\n        \"boçotrô / boçotrâ\": \"hoçifá\",\n        \"ûttedê\": \"hoçifá\"\n      },\n      \"negatibo\": {\n        \"tú\": \"no hoçifê\",\n        \"ûtté\": \"no hoçife\",\n        \"noçotrô / noçotrâ\": \"no hoçifemô\",\n        \"boçotrô / boçotrâ\": \"no hoçiféî\",\n        \"ûttedê\": \"no hoçiféî\"\n      }\n    },\n    \"condiçionâh\": {\n      \"preçente\": {\n        \"yo\": \"hoçifaría\",\n        \"tú\": \"hoçifaríâ\",\n        \"él / eya\": \"hoçifaría\",\n        \"ûtté\": \"hoçifaría\",\n        \"noçotrô, noçotrâ\": \"hoçifaríamô\",\n        \"boçotrô, boçotrâ\": \"hoçifaríaî\",\n        \"ûttedê\": \"hoçifaríaî\",\n        \"eyô, eyâ\": \"hoçifarían\"\n      },\n      \"perfêtto\": {\n        \"yo\": \"abría hoçifao\",\n        \"tú\": \"abríâ hoçifao\",\n        \"él / eya\": \"abría hoçifao\",\n        \"ûtté\": \"abría hoçifao\",\n        \"noçotrô, noçotrâ\": \"abríamô hoçifao\",\n        \"boçotrô, boçotrâ\": \"abríaî hoçifao\",\n        \"ûttedê\": \"abríaî hoçifao\",\n        \"eyô, eyâ\": \"abrían hoçifao\"\n      }\n    }\n  }\n}"
+        }
+      ]
+    }
+  ]
+}

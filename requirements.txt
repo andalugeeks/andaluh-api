@@ -2,4 +2,5 @@ Flask
 Flask-RESTful
 Flask-CORS 
 flask-swagger-ui
-andaluh
+andaluh>=0.3
+-e git+https://github.com/andalugeeks/andaluh-verbs.git#egg=andaluh-verbs

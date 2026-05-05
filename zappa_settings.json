@@ -4,7 +4,8 @@
         "profile_name": "zappa",
         "project_name": "andaluh-api",
         "runtime": "python3.8",
-        "s3_bucket": "zappa-deployment-s3-bucket"
+        "s3_bucket": "zappa-deployment-s3-bucket",
+        "aws_region": "eu-west-3"
     },
 
     "prod": {
@@ -12,6 +13,7 @@
         "profile_name": "zappa",
         "project_name": "andaluh-api",
         "runtime": "python3.8",
-        "s3_bucket": "zappa-deployment-s3-bucket"
+        "s3_bucket": "zappa-deployment-s3-bucket",
+        "aws_region": "eu-west-3"
     }
 }

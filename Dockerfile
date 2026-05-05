@@ -1,17 +1,26 @@
-FROM python:3
+FROM python:3.12-slim
 
 LABEL maintainer="felixonta@gmail.com"
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends \
-        libatlas-base-dev gfortran nginx supervisor
-
-RUN pip install uwsgi
+RUN mkdir -p /project
 
 COPY ./requirements.txt /project/requirements.txt
-RUN pip install -r /project/requirements.txt
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libopenblas-dev gfortran git \
+    && pip install --no-cache-dir uwsgi \
+    && pip install -r /project/requirements.txt \
+    && apt-get purge -y --auto-remove libopenblas-dev gfortran git \
+    && apt-get install -y --no-install-recommends nginx supervisor \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN useradd --no-create-home nginx
+
+RUN python -c "import verbecc; cg = verbecc.CompleteConjugator(verbecc.LangCodeISO639_1.es); cg.conjugate('ser')"
+RUN chmod -R a+rX /usr/local/lib/python3.12/site-packages/verbecc/data
+
+RUN chown -R nginx:nginx /project
 
 RUN rm /etc/nginx/sites-enabled/default
 RUN rm -r /root/.cache
